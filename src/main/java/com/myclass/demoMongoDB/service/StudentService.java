@@ -1,6 +1,7 @@
 package com.myclass.demoMongoDB.service;
 
 import com.myclass.demoMongoDB.entity.Student;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface StudentService {
     List<Student> emailLike (String email);
 
     List<Student> nameStartsWith (String name);
+
+    List<Student> byDepartmentId(String depId);
 }

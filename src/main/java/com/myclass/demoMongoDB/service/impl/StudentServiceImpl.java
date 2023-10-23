@@ -1,7 +1,9 @@
 package com.myclass.demoMongoDB.service.impl;
 
 import com.myclass.demoMongoDB.entity.Student;
+import com.myclass.demoMongoDB.repository.DepartmentRepository;
 import com.myclass.demoMongoDB.repository.StudentRepository;
+import com.myclass.demoMongoDB.repository.SubjectRepository;
 import com.myclass.demoMongoDB.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +19,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
+
+    @Autowired
+    SubjectRepository subjectRepository;
+
     @Override
     public Student createStudent(Student student) {
+        if(student.getDepartment() != null){
+            departmentRepository.save(student.getDepartment());
+        }
+        if(student.getSubjects() != null && student.getSubjects().size() > 0){
+            subjectRepository.saveAll(student.getSubjects());
+        }
         return studentRepository.save(student);
     }
 
@@ -95,6 +110,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> nameStartsWith (String name) {
         return studentRepository.findByNameStartsWith(name);
+    }
+
+    @Override
+    public List<Student> byDepartmentId(String depId) {
+        return studentRepository.findByDepartmentId(depId);
     }
 
 
